@@ -1,0 +1,29 @@
+{
+  "name": "sticky-goal",
+  "version": "1.0.0",
+  "description": "Tactile, persistent real paper sticky notes attached to your laptop screen with 2-priority floating/desktop z-ordering, deadline countdowns, and synthesized audio chimes.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node test_app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sanchita-Malakar/Sticky-Goal.git"
+  },
+  "keywords": [
+    "sticky-notes",
+    "productivity",
+    "electron",
+    "desktop-app",
+    "goals",
+    "deadlines",
+    "reminders",
+    "habits"
+  ],
+  "author": "Sanchita Malakar",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^41.7.1"
+  }
+}

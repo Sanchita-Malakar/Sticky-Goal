@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sticky Goal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sticky.css">
+</head>
+<body class="color-yellow font-handwriting top-tape mode-full">
+  <div id="sticky-card" class="sticky-container">
+
+    <!-- Top Attachment: Washi Tape or Pushpin -->
+    <div id="top-attachment" class="top-attachment drag-region">
+      <div class="tape-strip" title="Drag sticky note">
+        <span class="tape-texture"></span>
+      </div>
+      <div class="pushpin" title="Drag sticky note">
+        <div class="pin-head"></div>
+        <div class="pin-point"></div>
+      </div>
+    </div>
+
+    <!-- Sequential Popup & Wake/Hourly Reminder Toast Banner -->
+    <div id="popup-reminder-banner" class="popup-reminder-banner" style="display: none;">
+      <span id="popup-reminder-icon" class="popup-icon">🎯</span>
+      <span id="popup-reminder-text" class="popup-text">Don't forget your goal!</span>
+    </div>
+
+    <!-- Header Toolbar -->
+    <header class="sticky-header drag-region">
+      <div class="header-left no-drag">
+        <!-- Very Small Size Toggle Button (Small vs Full) -->
+        <button id="btn-mode-toggle" class="mini-mode-toggle" title="Switch size: Small (Goal only) / Full (with Todos)">
+          <span id="mini-toggle-icon">🎯</span>
+          <span id="mini-toggle-text">Small</span>
+        </button>
+      </div>
+
+      <!-- Center drag spacer -->
+      <div class="header-center"></div>
+
+      <!-- Right Header Actions (Clean & Minimal) -->
+      <div class="header-right no-drag">
+        <!-- Edit in App Button (Notes are only editable in App's All Notes Section) -->
+        <button id="btn-edit-in-app" class="tool-btn edit-tool-btn" title="Edit this goal in App's All Notes Section">
+          <svg class="tool-icon" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+          </svg>
+        </button>
+
+        <!-- Close Window (Stays saved in All Notes) - The clear X button! -->
+        <button id="btn-close" class="tool-btn close-tool-btn" title="Close sticky note from screen (Saved in All Notes)">
+          <svg class="tool-icon" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Note Body (View Only - Editable from App's All Notes Section) -->
+    <main id="note-body" class="note-main-body">
+      <!-- Title (Heading - View Only) -->
+      <div class="goal-title-wrapper" title="Double click or click 'Edit in App' to edit in All Notes">
+        <input type="text" id="note-title" class="note-title view-only" placeholder="Goal Title" readonly="readonly" tabindex="-1" />
+      </div>
+
+      <!-- Total Notes / Work Description (View Only) -->
+      <div class="notes-content-wrapper" title="Double click or click 'Edit in App' to edit in All Notes">
+        <textarea id="note-content" class="note-content view-only" placeholder="No description notes..." readonly="readonly" tabindex="-1" rows="3"></textarea>
+      </div>
+
+      <!-- Small Mode Status Bar (Visible in Small Mode only: Heading + Description + Status) -->
+      <div id="small-mode-bar" class="small-mode-bar">
+        <div class="small-bar-left">
+          <span id="small-deadline-chip" class="small-deadline-chip">⏰ No deadline</span>
+          <button id="btn-small-todos-hint" class="small-todos-btn no-drag" title="Click to view todos">
+            <span id="small-todos-label">📋 0 tasks</span>
+          </button>
+        </div>
+        <div class="small-bar-right">
+          <button id="btn-small-edit" class="small-save-btn no-drag" title="Edit goal in App's All Notes Section">
+            <span>✏️ Edit in App</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Deadline Bar (Visible in Full Mode) -->
+      <div id="deadline-bar" class="deadline-bar">
+        <div class="deadline-left">
+          <span class="deadline-icon">⏰</span>
+          <span id="deadline-text" class="deadline-text">No deadline</span>
+        </div>
+        <div class="deadline-right">
+          <span id="countdown-chip" class="countdown-chip">No deadline</span>
+        </div>
+      </div>
+
+      <!-- Checklist / Todos Section (Visible in Full Mode only) -->
+      <div id="checklist-section" class="checklist-section">
+        <div class="checklist-header">
+          <span class="checklist-heading">
+            <span>Tasks & Todos</span>
+            <span id="checklist-progress" class="checklist-badge">0/0</span>
+          </span>
+          <span class="checklist-view-hint">View only</span>
+        </div>
+        <ul id="checklist-items" class="checklist-items">
+          <!-- Dynamically populated items -->
+        </ul>
+      </div>
+
+      <!-- Sticky Footer Actions (Visible in Full Mode only) -->
+      <footer id="sticky-footer" class="sticky-footer">
+        <div class="footer-left-actions">
+          <button id="btn-footer-edit" class="save-note-btn footer-edit-btn" title="Edit this goal in App's All Notes Section">
+            <span class="save-icon">✏️</span>
+            <span>Edit in App</span>
+          </button>
+          <button id="btn-complete-goal" class="complete-goal-btn" title="Mark this entire goal accomplished!">
+            <span class="star-icon">✨</span>
+            <span id="complete-btn-text">Accomplished</span>
+          </button>
+        </div>
+
+        <button id="btn-open-dashboard" class="tool-btn dash-btn" title="Open All Notes Section in Dashboard">
+          <svg class="tool-icon" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+          </svg>
+        </button>
+      </footer>
+    </main>
+
+    <!-- Paper Corner Curl -->
+    <div class="paper-curl" title="Sticky Note Paper"></div>
+
+    <!-- Confetti Canvas for Goal Celebration -->
+    <canvas id="confetti-canvas" class="confetti-canvas"></canvas>
+
+    <!-- Accomplished Stamp Watermark -->
+    <div id="accomplished-stamp" class="accomplished-stamp" style="display: none;">
+      <div class="stamp-border">
+        <span>ACCOMPLISHED</span>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="../assets/sounds.js"></script>
+  <script src="sticky.js"></script>
+</body>
+</html>

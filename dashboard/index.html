@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sticky Goal - Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body class="theme-dark">
+  <div class="app-layout">
+    
+    <!-- Custom Window Titlebar -->
+    <div class="custom-titlebar drag-region">
+      <div class="titlebar-left">
+        <img src="../assets/icon.png" alt="Sticky Goal" class="app-logo" />
+        <span class="app-name">Sticky Goal</span>
+        <span class="version-tag">Desktop v1.0</span>
+      </div>
+
+      <div class="titlebar-center">
+        <span class="temporary-hint">
+          💡 <strong>Tip:</strong> This dashboard is temporary. Close it anytime — your sticky notes stay floating on screen!
+        </span>
+      </div>
+
+      <div class="titlebar-right no-drag">
+        <button id="titlebar-btn-minimize" class="titlebar-btn" title="Minimize Dashboard">
+          <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19 13H5v-2h14v2z"/></svg>
+        </button>
+        <button id="titlebar-btn-maximize" class="titlebar-btn" title="Maximize / Restore Dashboard">
+          <svg id="titlebar-maximize-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M4 4h16v16H4V4zm2 2v12h12V6H6z"/></svg>
+        </button>
+        <button id="titlebar-btn-close" class="titlebar-btn close" title="Close Dashboard (Stickies stay floating on your laptop screen)">
+          <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="dashboard-content">
+      
+      <!-- Top Action Bar -->
+      <header class="dashboard-header">
+        <div class="header-main-info">
+          <div class="greeting-row">
+            <h1 class="page-title">Goals & Screen Stickies</h1>
+            <span id="current-clock" class="live-clock">10:00 AM</span>
+          </div>
+          <p class="page-subtitle">Manage all your paper sticky notes, deadlines, and screen reminders in one temporary command center.</p>
+        </div>
+
+        <div class="header-quick-actions">
+          <!-- Arrange in Column Button -->
+          <button id="btn-arrange-column" class="btn btn-ghost" title="Snap all floating stickies into a neat vertical column with no overlaps">
+            <span class="btn-icon">📐</span>
+            <span>Arrange Column</span>
+          </button>
+
+          <!-- Close to Screen Button -->
+          <button id="btn-close-to-screen" class="btn btn-emerald" title="Close dashboard and continue working with floating sticky notes on your screen">
+            <span class="btn-icon">💻</span>
+            <span>Float on Screen & Close</span>
+            <span class="key-badge">Esc</span>
+          </button>
+
+          <!-- New Sticky Button with template dropdown -->
+          <div class="dropdown-wrapper">
+            <button id="btn-create-sticky" class="btn btn-primary">
+              <span class="btn-icon">➕</span>
+              <span>New Sticky Note</span>
+              <span class="key-badge">Ctrl+Alt+N</span>
+            </button>
+            <button id="btn-template-toggle" class="btn btn-primary btn-addon" title="Choose Template">▼</button>
+            <div id="template-dropdown" class="dropdown-menu" style="display: none;">
+              <div class="dropdown-title">Quick Goal Presets</div>
+              <button class="dropdown-item" data-template="standup">
+                <span class="item-emoji">🎯</span>
+                <div>
+                  <div class="item-title">Daily Focus & Top 3</div>
+                  <div class="item-desc">3 critical priorities for today</div>
+                </div>
+              </button>
+              <button class="dropdown-item" data-template="sprint">
+                <span class="item-emoji">⏱️</span>
+                <div>
+                  <div class="item-title">Deep Work Sprint</div>
+                  <div class="item-desc">90-minute deadline countdown</div>
+                </div>
+              </button>
+              <button class="dropdown-item" data-template="urgent">
+                <span class="item-emoji">🔥</span>
+                <div>
+                  <div class="item-title">Urgent Bug / Deadline</div>
+                  <div class="item-desc">P1 priority with warning audio alert</div>
+                </div>
+              </button>
+              <button class="dropdown-item" data-template="habit">
+                <span class="item-emoji">💧</span>
+                <div>
+                  <div class="item-title">Health & Wellness Break</div>
+                  <div class="item-desc">Hydration, posture & eye rest</div>
+                </div>
+              </button>
+              <button class="dropdown-item" data-template="idea">
+                <span class="item-emoji">💡</span>
+                <div>
+                  <div class="item-title">Brainstorm Scratchpad</div>
+                  <div class="item-desc">Quick jotting for thoughts</div>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Settings Button -->
+          <button id="btn-open-settings" class="btn btn-ghost" title="Audio & Reminder Settings">
+            <span class="btn-icon">⚙️</span>
+            <span>Settings</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Key Metrics Row -->
+      <section class="metrics-grid">
+        <div class="metric-card active-card">
+          <div class="metric-icon-box yellow">📌</div>
+          <div class="metric-data">
+            <div class="metric-number" id="metric-active-count">0</div>
+            <div class="metric-label">Floating on Screen</div>
+          </div>
+          <button id="btn-toggle-stickies-visibility" class="metric-action-btn" title="Toggle Show/Hide All on Screen">
+            <span id="stickies-visibility-text">Hide All</span>
+          </button>
+        </div>
+
+        <div class="metric-card due-card">
+          <div class="metric-icon-box amber">⏰</div>
+          <div class="metric-data">
+            <div class="metric-number" id="metric-due-count">0</div>
+            <div class="metric-label">Due Today</div>
+          </div>
+          <span class="metric-badge">Imminent</span>
+        </div>
+
+        <div class="metric-card overdue-card" id="card-overdue">
+          <div class="metric-icon-box crimson">⚠️</div>
+          <div class="metric-data">
+            <div class="metric-number" id="metric-overdue-count">0</div>
+            <div class="metric-label">Overdue Deadlines</div>
+          </div>
+          <span class="metric-badge warning">Action Needed</span>
+        </div>
+
+        <div class="metric-card completed-card">
+          <div class="metric-icon-box emerald">🏆</div>
+          <div class="metric-data">
+            <div class="metric-number" id="metric-completed-count">0</div>
+            <div class="metric-label">Accomplished Goals</div>
+          </div>
+          <span class="metric-badge success">All Time</span>
+        </div>
+      </section>
+
+      <!-- Search, Filters, and View Controls -->
+      <div class="filter-bar">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-input" placeholder="Search goals, tasks, or tags..." />
+          <button id="btn-clear-search" class="clear-search-btn" style="display: none;">&times;</button>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-filter="all">All Goals</button>
+          <button class="filter-tab" data-filter="floating">Floating on Screen</button>
+          <button class="filter-tab" data-filter="high">🔥 High Priority</button>
+          <button class="filter-tab" data-filter="low">🌱 Low Priority</button>
+          <button class="filter-tab" data-filter="completed">Accomplished</button>
+        </div>
+
+        <!-- Priority Select -->
+        <div class="select-wrapper">
+          <select id="priority-filter-select" class="custom-select">
+            <option value="all">All Priorities</option>
+            <option value="high">🔥 High Priority (Floating Above All Apps)</option>
+            <option value="low">🌱 Low Priority (Desktop Screen Only)</option>
+          </select>
+        </div>
+
+        <!-- Sort Select -->
+        <div class="select-wrapper">
+          <select id="sort-select" class="custom-select">
+            <option value="deadline">Sort: Deadline (Earliest)</option>
+            <option value="priority">Sort: Priority (Highest)</option>
+            <option value="newest">Sort: Newly Created</option>
+            <option value="title">Sort: Title (A-Z)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- App's All Notes Section Header Bar -->
+      <div class="all-notes-section-header">
+        <div class="section-title-left">
+          <h2 class="section-title">📋 App's All Notes Section</h2>
+          <span id="all-notes-count-badge" class="section-badge">0 Goals</span>
+        </div>
+        <div class="section-title-right">
+          <button id="btn-section-add-sticky" class="btn btn-emerald btn-sm" title="Add a new note to this section">
+            <span class="btn-icon">➕</span>
+            <span>Add Note to All Notes</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Sticky Notes Corkboard Grid -->
+      <main class="board-container">
+        <div id="notes-grid" class="notes-grid">
+          <!-- Dynamically populated sticky cards -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="empty-state" style="display: none;">
+          <div class="empty-illustration">📝</div>
+          <h3>No Sticky Goals in All Notes</h3>
+          <p>Create a sticky goal to pin your priorities directly on your laptop screen!</p>
+          <button id="btn-empty-new" class="btn btn-emerald" style="margin-top: 14px;">
+            <span>➕ Add Your First Sticky Goal to All Notes</span>
+          </button>
+        </div>
+      </main>
+
+    </div>
+
+    <!-- Create & Edit Sticky Goal Modal -->
+    <div id="create-modal" class="modal-backdrop" style="display: none;">
+      <div class="modal-card create-modal-card">
+        <div class="modal-header">
+          <div class="modal-title-group">
+            <h2 id="modal-title-heading">➕ Create & Add New Sticky Goal</h2>
+            <p id="modal-title-desc">Set your goal, todos, paper color, and deadline. Then add it directly to your All Notes section.</p>
+          </div>
+          <button id="btn-close-create-modal" class="modal-close-btn" title="Close dialog">&times;</button>
+        </div>
+
+        <div class="modal-body create-form-body">
+          <input type="hidden" id="modal-note-id" value="" />
+
+          <!-- Title / Goal -->
+          <div class="form-group">
+            <label for="create-title-input">Goal Title <span class="required-star">*</span></label>
+            <input type="text" id="create-title-input" class="form-input form-title-input" placeholder="What is your main goal? (e.g. Complete quarterly roadmap)" maxlength="80" autocomplete="off" />
+          </div>
+
+          <!-- Total Notes / Description -->
+          <div class="form-group">
+            <label for="create-content-input">Motivation & Details (Optional)</label>
+            <textarea id="create-content-input" class="form-textarea" placeholder="Key motivation, instructions, or why this goal is important..." rows="3"></textarea>
+          </div>
+
+          <!-- Initial Screen Size Mode -->
+          <div class="form-group">
+            <label>Sticky Note Size on Screen</label>
+            <div class="create-mode-switch">
+              <button type="button" class="mode-select-btn active" id="mode-opt-compact" data-mode="small">
+                <span class="mode-opt-icon">🎯</span>
+                <div class="mode-opt-texts">
+                  <div class="mode-opt-title">Small Size (Default)</div>
+                  <div class="mode-opt-desc">Heading and work description visible</div>
+                </div>
+              </button>
+              <button type="button" class="mode-select-btn" id="mode-opt-full" data-mode="full">
+                <span class="mode-opt-icon">📋</span>
+                <div class="mode-opt-texts">
+                  <div class="mode-opt-title">Full Size Mode</div>
+                  <div class="mode-opt-desc">Heading + description + checklist todos visible</div>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Color and Priority Row -->
+          <div class="form-row-2">
+            <!-- Paper Palette -->
+            <div class="form-group">
+              <label>Paper Color</label>
+              <div class="create-color-palette" id="create-color-palette">
+                <button type="button" class="create-color-dot bg-yellow active" data-color="yellow" title="Canary Gold"></button>
+                <button type="button" class="create-color-dot bg-peach" data-color="peach" title="Coral Peach"></button>
+                <button type="button" class="create-color-dot bg-mint" data-color="mint" title="Matcha Mint"></button>
+                <button type="button" class="create-color-dot bg-blue" data-color="blue" title="Sky Breeze"></button>
+                <button type="button" class="create-color-dot bg-lavender" data-color="lavender" title="Lavender Dream"></button>
+                <button type="button" class="create-color-dot bg-rose" data-color="rose" title="Sakura Rose"></button>
+                <button type="button" class="create-color-dot bg-kraft" data-color="kraft" title="Kraft Natural"></button>
+                <button type="button" class="create-color-dot bg-slate" data-color="slate" title="Cyber Slate"></button>
+              </div>
+            </div>
+
+            <!-- Priority (Only 2 Priorities: High and Low) -->
+            <div class="form-group">
+              <label for="create-priority-select">Priority & Screen Behavior</label>
+              <select id="create-priority-select" class="custom-select full-width">
+                <option value="high" selected>🔥 High Priority (Floating over all apps & tabs)</option>
+                <option value="low">🌱 Low Priority (Desktop screen only, below other apps)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Pin & Float on Screen Toggle in App Editor -->
+          <div class="form-group modal-pin-group">
+            <label class="modal-pin-label" for="create-pin-toggle">
+              <input type="checkbox" id="create-pin-toggle" checked />
+              <span class="modal-pin-checkbox"></span>
+              <span class="modal-pin-text">📌 <strong>Pinned to Screen</strong> (High: floats above all apps | Low: sticked on desktop)</span>
+            </label>
+          </div>
+
+          <!-- Deadline & Automatic Audio Reminders Row -->
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="create-deadline-input">Deadline Date & Time</label>
+              <input type="datetime-local" id="create-deadline-input" class="form-input" />
+            </div>
+
+            <div class="form-group auto-audio-group">
+              <label>🔔 Audio & Screen Reminders (Automatic)</label>
+              <div class="auto-reminders-box">
+                <div class="auto-reminder-item">
+                  <span class="auto-reminder-icon">💻</span>
+                  <div class="auto-reminder-text">
+                    <strong>Laptop Reopen:</strong> Notifies automatically whenever device opens.
+                  </div>
+                </div>
+                <div class="auto-reminder-item">
+                  <span class="auto-reminder-icon">⏰</span>
+                  <div class="auto-reminder-text">
+                    <strong>Hourly Nudge:</strong> Notifies every 1 continuous working hour.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subtasks / Checklist Items -->
+          <div class="form-group">
+            <div class="label-with-action">
+              <label>Checklist Tasks & Todos</label>
+              <button type="button" id="btn-create-add-subtask" class="btn-link-action">+ Add Subtask</button>
+            </div>
+            <div id="create-subtasks-list" class="create-subtasks-list">
+              <div class="create-subtask-item">
+                <span class="subtask-icon">▫</span>
+                <input type="text" class="form-input create-subtask-input" placeholder="Subtask 1..." />
+                <button type="button" class="btn-remove-subtask" title="Remove subtask">&times;</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer create-modal-footer">
+          <button type="button" id="btn-modal-delete" class="btn btn-danger" style="display: none; margin-right: auto;">
+            <span>🗑️ Delete Goal</span>
+          </button>
+          <button type="button" id="btn-cancel-create" class="btn btn-ghost">Cancel</button>
+          
+          <!-- Explicit Button to Add or Save to All Notes Section -->
+          <button type="button" id="btn-confirm-add-all-notes" class="btn btn-emerald btn-large">
+            <span class="btn-icon" id="btn-modal-icon">➕</span>
+            <span class="btn-text" id="btn-modal-submit-text">Add Note to All Notes Section & Float on Screen</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Modal / Drawer -->
+    <div id="settings-modal" class="modal-backdrop" style="display: none;">
+      <div class="modal-card">
+        <div class="modal-header">
+          <div class="modal-title-group">
+            <h2>⚙️ Sticky Goal Settings</h2>
+            <p>Customize reminders, audio chimes, defaults, and desktop shortcuts.</p>
+          </div>
+          <button id="btn-close-settings" class="modal-close-btn">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <!-- Audio Reminders Section -->
+          <div class="settings-group">
+            <h3>🔔 Audio & Chimes</h3>
+            <div class="setting-row">
+              <div class="setting-info">
+                <label for="setting-sound-toggle">Enable Audio Chimes</label>
+                <p>Play pleasant audio cues for deadlines, checklist checks, and completions.</p>
+              </div>
+              <input type="checkbox" id="setting-sound-toggle" class="toggle-switch" checked />
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <label for="setting-volume">Sound Volume</label>
+                <p>Volume of chimes and reminder alerts.</p>
+              </div>
+              <div class="slider-wrapper">
+                <input type="range" id="setting-volume" min="0" max="1" step="0.05" value="0.8" />
+                <span id="volume-val">80%</span>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <label>Test Synthesized Chimes</label>
+                <p>Experience the built-in tactile sound feedback.</p>
+              </div>
+              <div class="test-chimes-group">
+                <button class="test-sound-btn" data-sound="gentle">🎵 Gentle Chime</button>
+                <button class="test-sound-btn" data-sound="bell">🔔 Tibetan Bell</button>
+                <button class="test-sound-btn" data-sound="alert">⚠️ Urgent Alert</button>
+                <button class="test-sound-btn" data-sound="complete">✨ Fanfare</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop Notifications -->
+          <div class="settings-group">
+            <h3>🖥️ Desktop Reminders & Screen Persistence</h3>
+            <div class="setting-row">
+              <div class="setting-info">
+                <label for="setting-notifications-toggle">Windows Desktop Notifications</label>
+                <p>Show native banner alerts when deadlines approach or become overdue.</p>
+              </div>
+              <input type="checkbox" id="setting-notifications-toggle" class="toggle-switch" checked />
+            </div>
+
+
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <label for="setting-pin-default">Default to Always-on-Top (Pinned)</label>
+                <p>New stickies automatically float over other application windows.</p>
+              </div>
+              <input type="checkbox" id="setting-pin-default" class="toggle-switch" checked />
+            </div>
+          </div>
+
+          <!-- Laptop Reopen & Hourly Goal Mindful Reminders -->
+          <div class="settings-group">
+            <h3>⚡ Laptop Reopen & Hourly Mindfulness Reminders</h3>
+            <div class="setting-row">
+              <div class="setting-info">
+                <label for="setting-wake-toggle">Reopen Laptop Wake-Up Sequence</label>
+                <p>When you reopen or unlock your laptop, play a welcome chime and sequentially pop up each active goal with a highlight reminder.</p>
+              </div>
+              <input type="checkbox" id="setting-wake-toggle" class="toggle-switch" checked />
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <label for="setting-hourly-toggle">Hourly Goal Mindfulness Nudge</label>
+                <p>Every 1 hour while working, notify you: "Don't forget your goal! Only X days/hours remained to finish..."</p>
+              </div>
+              <input type="checkbox" id="setting-hourly-toggle" class="toggle-switch" checked />
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <label for="setting-hourly-interval">Hourly Nudge Frequency</label>
+                <p>How often to check in with a goal mindfulness notification.</p>
+              </div>
+              <select id="setting-hourly-interval" class="custom-select">
+                <option value="30">Every 30 minutes</option>
+                <option value="60" selected>Every 1 hour (Default)</option>
+                <option value="120">Every 2 hours</option>
+              </select>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <label>Test Live Reminders</label>
+                <p>Preview the exact sequence and notification on your screen right now.</p>
+              </div>
+              <div class="test-chimes-group">
+                <button id="btn-test-wake-sequence" class="btn btn-ghost" style="font-size: 11px;">💻 Test Reopen Sequence</button>
+                <button id="btn-test-hourly-nudge" class="btn btn-ghost" style="font-size: 11px;">⏰ Test Hourly Nudge</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Global Shortcuts Reference -->
+          <div class="settings-group">
+            <h3>⌨️ Global Keyboard Shortcuts</h3>
+            <div class="shortcut-table">
+              <div class="shortcut-row">
+                <span class="shortcut-desc">Create New Sticky Note anywhere</span>
+                <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>N</kbd>
+              </div>
+              <div class="shortcut-row">
+                <span class="shortcut-desc">Toggle Show/Hide All Floating Stickies</span>
+                <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>S</kbd>
+              </div>
+              <div class="shortcut-row">
+                <span class="shortcut-desc">Open / Close Temporary Dashboard</span>
+                <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>D</kbd>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button id="btn-save-settings" class="btn btn-primary">Save Settings</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="../assets/sounds.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

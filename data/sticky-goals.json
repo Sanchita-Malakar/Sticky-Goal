@@ -1,0 +1,110 @@
+{
+  "settings": {
+    "soundEnabled": true,
+    "soundVolume": 0.85,
+    "soundTheme": "gentle",
+    "notificationsEnabled": true,
+    "defaultColor": "yellow",
+    "defaultFontStyle": "handwriting",
+    "defaultTapeStyle": "tape",
+    "defaultAlwaysOnTop": true,
+    "remindMinutesBefore": 15,
+    "wakeAnnouncementEnabled": true,
+    "hourlyNudgeEnabled": true,
+    "hourlyNudgeIntervalMinutes": 60,
+    "autoLaunch": false,
+    "globalShortcutNew": "CommandOrControl+Alt+N",
+    "globalShortcutToggle": "CommandOrControl+Alt+S",
+    "globalShortcutDashboard": "CommandOrControl+Alt+D",
+    "theme": "dark"
+  },
+  "notes": [
+    {
+      "id": "welcome-sticky-1",
+      "title": "🎯 Welcome to Sticky Goal!",
+      "content": "Your real paper sticky notes right on your laptop screen.\n\n• Drag me anywhere by the header bar\n• Toggle pin 📌 to keep floating\n• Fold 🔼 to save screen space\n• Check off items to complete goals!",
+      "checklist": [
+        {
+          "id": "item-1",
+          "text": "Drag this sticky note to your favorite screen spot",
+          "done": true
+        },
+        {
+          "id": "item-2",
+          "text": "Click ➕ to create your first personal goal",
+          "done": false
+        },
+        {
+          "id": "item-3",
+          "text": "Set a deadline & hear the reminder chime",
+          "done": false
+        }
+      ],
+      "color": "yellow",
+      "priority": "high",
+      "pinned": true,
+      "folded": true,
+      "tapeStyle": "tape",
+      "fontStyle": "handwriting",
+      "tags": [
+        "Welcome",
+        "Guide"
+      ],
+      "bounds": {
+        "width": 320,
+        "height": 180
+      },
+      "deadline": "2026-10-29T12:30:00.000Z",
+      "reminderTime": 30,
+      "reminded": false,
+      "completed": false,
+      "completedAt": null,
+      "createdAt": "2026-10-29T05:01:10.928Z",
+      "updatedAt": "2026-10-29T05:01:10.928Z",
+      "archived": false,
+      "visible": true,
+      "viewMode": "small"
+    },
+    {
+      "id": "welcome-sticky-2",
+      "title": "🌱 Today's Low Priority (Desktop Screen)",
+      "content": "This low priority note is sticked directly on your desktop screen. When you open any browser, tab, or app, it quietly hides below them!",
+      "checklist": [
+        {
+          "id": "item-2-1",
+          "text": "Review quarterly deliverables",
+          "done": false
+        },
+        {
+          "id": "item-2-2",
+          "text": "Submit project proposal",
+          "done": false
+        }
+      ],
+      "color": "peach",
+      "priority": "low",
+      "pinned": true,
+      "folded": true,
+      "tapeStyle": "pin",
+      "fontStyle": "handwriting",
+      "tags": [
+        "Work",
+        "Priority"
+      ],
+      "bounds": {
+        "width": 320,
+        "height": 180
+      },
+      "deadline": "2026-10-30T06:30:00.000Z",
+      "reminderTime": 60,
+      "reminded": false,
+      "completed": false,
+      "completedAt": null,
+      "createdAt": "2026-10-29T05:01:10.928Z",
+      "updatedAt": "2026-10-29T05:01:10.928Z",
+      "archived": false,
+      "visible": true,
+      "viewMode": "small"
+    }
+  ]
+}
